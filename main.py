@@ -1,7 +1,4 @@
-import library.const as const
-
-
-
+import library.process as proc
 
 
 
@@ -9,8 +6,9 @@ import library.const as const
 
 
 def main():
-    print("TEST")
-
+    users_ids_df = proc.get_users_ids()
+    proc.get_all_tweets_types_count
+    print(users_ids_df.head(1))
 
 
 
