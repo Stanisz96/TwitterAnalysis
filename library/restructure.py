@@ -57,8 +57,8 @@ def get_users_dataframe() -> pd.DataFrame:
     '''
     
     users_dataframe = pd.DataFrame(list(gen_users_data_array(proc.get_users_ids())),
-                           columns=const.TWEET_COLUMN_NAMES)\
-                                .astype(const.TWEET_TYPES_LIST)\
+                           columns=const.USER_COLUMN_NAMES)\
+                                .astype(const.USER_TYPES_LIST)\
                                 .reset_index()
 
     return users_dataframe
@@ -71,13 +71,24 @@ def gen_users_data_array(users_ids_df: pd.DataFrame):
     for index, row in users_ids_df.iterrows():
         json_path = pl.Path(const.USERS_PATH,row['id'],"userData.json")
         json_temp = json.load(open(json_path, encoding="utf-8"))
-
-        yield [row['type'], json_temp['Id'], json_temp['Name'], json_temp['Username'],
-               json_temp['Created_at'], json_temp['Description'],json_temp['Location'],
-               json_temp['Public_metrics']['Followers_count'],
-               json_temp['Public_metrics']['Tweet_count'],
-               json_temp['Verified'],json_temp['Protected']]
-
+        if row['type'] == 'A':
+            json_temp = json_temp['data']
+        
+            yield [row['type'], json_temp['id'], json_temp['name'], json_temp['username'],
+                json_temp['created_at'], json_temp['description'],
+                json_temp['public_metrics']['followers_count'],
+                json_temp['public_metrics']['tweet_count'],
+                json_temp['verified'],json_temp['protected']]
+        
+        if row['type'] == 'B':
+            yield [row['type'], json_temp['Id'], json_temp['Name'], json_temp['Username'],
+                json_temp['Created_at'], json_temp['Description'],
+                json_temp['Public_metrics']['Followers_count'],
+                json_temp['Public_metrics']['Tweet_count'],
+                json_temp['Verified'],json_temp['Protected']]
+USER_TYPES_LIST = {'type': str,'id': np.uint64, 'name': str, 'username': str, 'created_at': str,
+                    'description': str, 'followers_count': np.uint32, 'tweet_count': np.uint32, 'verified': bool,
+                    'protected': bool}
 
 def get_all_ids_for_individual(user_following_id: np.uint64) -> list:
     '''

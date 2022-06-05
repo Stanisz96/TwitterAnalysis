@@ -20,6 +20,16 @@ def save_all_tweets_individuals():
         tweets_df.to_feather(f'./data/tweets/{id}')
 
 
+def save_users_data():
+    '''
+    Save DataFrame objects, containing users data from userData.json files.
+    Saved data are in feather format.
+    '''
+
+    users_data_df = res.get_users_dataframe()
+    users_data_df.to_feather('./data/users')
+
+
 def load_tweets_individual(user_id: np.uint64) -> pd.DataFrame:
     '''
     Load feather format file and return DataFrame object for specific user id individual. 
