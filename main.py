@@ -14,7 +14,10 @@ def main(step_number: int):
 
     if step_number == 3:
         users_data = fo.load_users_data()
-        print(users_data.head(10))
+        print(users_data.info(verbose=False, memory_usage="deep"))
+
+
+
 
 if __name__=="__main__":
     main(3)
