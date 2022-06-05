@@ -29,6 +29,24 @@ def save_users_data():
     users_data_df = res.get_users_dataframe()
     users_data_df.to_feather('./data/users')
 
+def save_all_tweets_types_count():
+    '''
+    Save DataFrame objects, containing count of all tweets types.
+    Saved data are in feather format.
+    '''
+
+    tweets_types_count_df = res.get_users_dataframe()
+    tweets_types_count_df.to_feather('./processed/tweets_types_count')  
+
+def load_all_tweets_types_count():
+    '''
+    Load feather format file and return DataFrame object containing count of all tweets types. 
+    '''
+    
+    tweets_types_count_df = pd.read_feather('./processed/tweets_types_count')
+
+    return tweets_types_count_df
+   
 
 def load_tweets_individual(user_id: np.uint64) -> pd.DataFrame:
     '''
@@ -50,3 +68,4 @@ def load_users_data() -> pd.DataFrame:
     users_df = pd.read_feather('./data/users')
 
     return users_df
+
