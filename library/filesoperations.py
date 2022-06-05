@@ -40,3 +40,13 @@ def load_tweets_individual(user_id: np.uint64) -> pd.DataFrame:
     tweets_df = pd.read_feather(f'./data/{user_id}')
 
     return tweets_df
+
+
+def load_users_data() -> pd.DataFrame:
+    '''
+    Load feather format file and return DataFrame object containing users data.
+    '''
+
+    users_df = pd.read_feather('./data/users')
+
+    return users_df
