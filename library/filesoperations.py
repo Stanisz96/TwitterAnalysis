@@ -34,8 +34,8 @@ def save_all_tweets_types_count():
     Save DataFrame objects, containing count of all tweets types.
     Saved data are in feather format.
     '''
-
-    tweets_types_count_df = proc.get_all_tweets_types_count()
+    users_ids_df = proc.get_users_ids()
+    tweets_types_count_df = proc.get_all_tweets_types_count(users_ids_df)
     tweets_types_count_df.to_feather('./processed/tweets_types_count')  
 
 def load_all_tweets_types_count():
