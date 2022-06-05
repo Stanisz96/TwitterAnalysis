@@ -1,6 +1,6 @@
 import library.process as proc
 import library.filesoperations as fo
-
+import library.draw as draw
 
 
 
@@ -21,8 +21,13 @@ def main(step_number: int):
         tweets_types_count_df = fo.load_all_tweets_types_count()
         print(tweets_types_count_df.info(verbose=False, memory_usage="deep"))
 
+    if step_number == 5:
+        tweets_types_count_df = fo.load_all_tweets_types_count()
+        draw.tweets_types_count(tweets_types_count_df)
+
+
 
 
 
 if __name__=="__main__":
-    main(4)
+    main(5)
