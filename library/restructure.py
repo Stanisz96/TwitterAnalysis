@@ -8,25 +8,19 @@ import numpy as np
 
 
 
-def convert_tweets_from_json_to_df(users_ids_df: pd.DataFrame):
-    users_following_ids_df = users_ids_df[users_ids_df['tpye'] == 'A']
-
+def gen_tweets_dataframes(users_following_ids_df: pd.DataFrame):
     for index, row in users_following_ids_df.iterrows(): 
-        tweets_df = pd.DataFrame(list(generator_tweets(row['id'])),
-                                         columns=const.TWEET_COLUMN_NAMES).astype(const.TWEET_TYPES_LIST)
-        
-    tweets_df = tweets_df.reset_index()
-
-    return tweets_df
+        yield pd.DataFrame(list(gen_tweets_array(row['id'])),
+                           columns=const.TWEET_COLUMN_NAMES)\
+                                .astype(const.TWEET_TYPES_LIST)\
+                                .reset_index()
 
 
-
-def generator_tweets(user_following_id: np.uint64):
-    users_ids_array = [user_following_id]
-    users_ids_array.append(get_following_ids_of_an_user(user_following_id))
+def gen_tweets_array(user_following_id: np.uint64):
+    users_ids_array = get_all_ids_for_individual(user_following_id)
 
     for users_following_id in users_ids_array:
-        tweets_path = pl.Path(const.USERS_PATH,users_following_id,"tweets")
+        tweets_path = pl.Path(const.USERS_PATH,str(users_following_id),"tweets")
 
         for idx, tweet_type in enumerate(const.TWEET_TYPE_NAMES):
             tweets_type_path = pl.Path(tweets_path,tweet_type)
@@ -47,10 +41,15 @@ def generator_tweets(user_following_id: np.uint64):
                            json_temp['Public_metrics']['Quote_count']]
 
 
+def get_all_ids_for_individual(user_following_id: np.uint64) -> list:
+    ids_array = [user_following_id]
+    ids_array.extend(get_following_ids_of_an_user(user_following_id))
 
-def get_following_ids_of_an_user(user_following_id: np.uint64):
+    return ids_array
+
+def get_following_ids_of_an_user(user_following_id: np.uint64) -> list:
     json_path = os.path.join(const.USERS_PATH, user_following_id, "metaData.json")
     json_file = json.load(open(json_path, encoding="utf8"))
-    following_ids_of_an_user = json_file['Following']
+    following_ids_of_an_user = list(json_file['Following'])
 
     return following_ids_of_an_user
