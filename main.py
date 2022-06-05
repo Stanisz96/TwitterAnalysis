@@ -16,8 +16,13 @@ def main(step_number: int):
         users_data = fo.load_users_data()
         print(users_data.info(verbose=False, memory_usage="deep"))
 
+    if step_number == 4:
+        fo.save_all_tweets_types_count()
+        tweets_types_count_df = fo.load_all_tweets_types_count()
+        print(tweets_types_count_df.info(verbose=False, memory_usage="deep"))
+
 
 
 
 if __name__=="__main__":
-    main(3)
+    main(4)
