@@ -9,6 +9,12 @@ import numpy as np
 
 
 def gen_tweets_dataframes(users_following_ids_df: pd.DataFrame):
+    '''
+    Generate DataFrame objects for every individual.
+    Where individual refers to data for one following user and 
+    all data of users that this user is following.
+    '''
+    
     for index, row in users_following_ids_df.iterrows(): 
         yield pd.DataFrame(list(gen_tweets_array(row['id'])),
                            columns=const.TWEET_COLUMN_NAMES)\
@@ -17,6 +23,12 @@ def gen_tweets_dataframes(users_following_ids_df: pd.DataFrame):
 
 
 def gen_tweets_array(user_following_id: np.uint64):
+    '''
+    Generate array of tweets data converted from json file for individual.
+    Where individual refers to data for one following user and 
+    all data of users that this user is following.
+    '''
+
     users_ids_array = get_all_ids_for_individual(user_following_id)
 
     for users_following_id in users_ids_array:
@@ -42,12 +54,22 @@ def gen_tweets_array(user_following_id: np.uint64):
 
 
 def get_all_ids_for_individual(user_following_id: np.uint64) -> list:
+    '''
+    Get all ids for individual user given in fun parm.
+    Where individual refers to data for one following user and 
+    all data of users that this user is following.
+    '''
+
     ids_array = [user_following_id]
     ids_array.extend(get_following_ids_of_an_user(user_following_id))
 
     return ids_array
 
 def get_following_ids_of_an_user(user_following_id: np.uint64) -> list:
+    '''
+    Get all ids of users that are followed by user given in fun parm.
+    '''
+
     json_path = os.path.join(const.USERS_PATH, user_following_id, "metaData.json")
     json_file = json.load(open(json_path, encoding="utf8"))
     following_ids_of_an_user = list(json_file['Following'])
