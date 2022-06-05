@@ -1,10 +1,10 @@
 import pandas as pd
 import library.process as proc 
 import library.restructure as res
+import numpy as np
 
 
-
-def save_all_tweets_individual():
+def save_all_tweets_individuals():
     '''
     Save DataFrame objects, containing tweets data for every individual.
     Where individual refers to data for one following user and 
@@ -16,16 +16,17 @@ def save_all_tweets_individual():
     users_following_ids_df = users_ids_df[users_ids_df['type'] == 'A']
 
     for tweets_df in res.gen_tweets_dataframes(users_following_ids_df):
-        tweets_df.to_feather('./data/test')
+        id = tweets_df.iloc[0]['author_id']
+        tweets_df.to_feather(f'./data/tweets/{id}')
 
 
-def load_tweets_individual() -> pd.DataFrame:
+def load_tweets_individual(user_id: np.uint64) -> pd.DataFrame:
     '''
     Load feather format file and return DataFrame object for specific user id individual. 
     Where individual refers to data for one following user and 
     all data of users that this user is following.
     '''
-    
-    tweets_df = pd.read_feather('./data/test')
+
+    tweets_df = pd.read_feather(f'./data/{user_id}')
 
     return tweets_df

@@ -10,7 +10,7 @@ def main():
     # proc.get_all_tweets_types_count
     # print(users_ids_df.head(1))
 
-    fo.save_tweets_individual()
+    fo.save_all_tweets_individuals()
 
 
 if __name__=="__main__":
