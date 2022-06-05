@@ -1,11 +1,10 @@
-from matplotlib.pyplot import get
 import pandas as pd
 import pathlib as pl
 import library.const as const
 import os
 import json
 import numpy as np
-
+import library.process as proc
 
 
 def gen_tweets_dataframes(users_following_ids_df: pd.DataFrame):
@@ -51,6 +50,33 @@ def gen_tweets_array(user_following_id: np.uint64):
                            json_temp['Public_metrics']['Reply_count'],
                            json_temp['Public_metrics']['Like_count'],
                            json_temp['Public_metrics']['Quote_count']]
+
+def get_users_dataframe() -> pd.DataFrame:
+    '''
+    Get users DataFrame object. Function return DataFrame containing all users data from userData.json files.
+    '''
+    
+    users_dataframe = pd.DataFrame(list(gen_users_data_array(proc.get_users_ids())),
+                           columns=const.TWEET_COLUMN_NAMES)\
+                                .astype(const.TWEET_TYPES_LIST)\
+                                .reset_index()
+
+    return users_dataframe
+
+def gen_users_data_array(users_ids_df: pd.DataFrame):
+    '''
+    Generate list containing all users data.
+    '''
+
+    for index, row in users_ids_df.iterrows():
+        json_path = pl.Path(const.USERS_PATH,row['id'],"userData.json")
+        json_temp = json.load(open(json_path, encoding="utf-8"))
+
+        yield [row['type'], json_temp['Id'], json_temp['Name'], json_temp['Username'],
+               json_temp['Created_at'], json_temp['Description'],json_temp['Location'],
+               json_temp['Public_metrics']['Followers_count'],
+               json_temp['Public_metrics']['Tweet_count'],
+               json_temp['Verified'],json_temp['Protected']]
 
 
 def get_all_ids_for_individual(user_following_id: np.uint64) -> list:
