@@ -86,9 +86,7 @@ def gen_users_data_array(users_ids_df: pd.DataFrame):
                 json_temp['Public_metrics']['Followers_count'],
                 json_temp['Public_metrics']['Tweet_count'],
                 json_temp['Verified'],json_temp['Protected']]
-USER_TYPES_LIST = {'type': str,'id': np.uint64, 'name': str, 'username': str, 'created_at': str,
-                    'description': str, 'followers_count': np.uint32, 'tweet_count': np.uint32, 'verified': bool,
-                    'protected': bool}
+
 
 def get_all_ids_for_individual(user_following_id: np.uint64) -> list:
     '''

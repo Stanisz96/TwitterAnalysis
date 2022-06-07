@@ -34,11 +34,12 @@ def save_all_tweets_types_count():
     Save DataFrame objects, containing count of all tweets types.
     Saved data are in feather format.
     '''
+
     users_ids_df = proc.get_users_ids()
     tweets_types_count_df = proc.get_all_tweets_types_count(users_ids_df)
     tweets_types_count_df.to_feather('./processed/tweets_types_count')  
 
-def load_all_tweets_types_count():
+def load_all_tweets_types_count() -> pd.DataFrame:
     '''
     Load feather format file and return DataFrame object containing count of all tweets types. 
     '''
@@ -55,10 +56,22 @@ def load_tweets_individual(user_id: np.uint64) -> pd.DataFrame:
     all data of users that this user is following.
     '''
 
-    tweets_df = pd.read_feather(f'./data/{user_id}')
+    tweets_df = pd.read_feather(f'./data/tweets/{user_id}')
 
     return tweets_df
 
+
+def load_all_tweets_individual() -> list:
+
+    users_ids_df = proc.get_users_ids()
+    users_following_ids_df = users_ids_df[users_ids_df['type'] == 'A']
+    tweets_df_list = []
+
+    for index, row in users_following_ids_df.iterrows():
+        id = row['id']
+        tweets_df_list.append(pd.read_feather(f'./data/tweets/{id}'))
+    
+    return tweets_df_list
 
 def load_users_data() -> pd.DataFrame:
     '''
