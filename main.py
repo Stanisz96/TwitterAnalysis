@@ -29,8 +29,9 @@ def main(step_number: int):
         draw.tweets_types_count(tweets_types_count_df)
 
     if step_number == 6:
-        tweets_df_list = fo.load_all_tweets_individual()
-        tweets_date_count_df = proc.count_tweets_date(tweets_df_list, '24H')
+        tweets_df_gen = fo.load_by_one_all_individual()
+        tweets_date_count_df = proc.count_tweets_date(tweets_df_gen, '24H')
+        fo.save_count_tweets_date(tweets_date_count_df)
         draw.tweets_date_count(tweets_date_count_df, 10)
 
 if __name__=="__main__":

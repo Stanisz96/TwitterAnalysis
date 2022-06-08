@@ -39,6 +39,9 @@ def save_all_tweets_types_count():
     tweets_types_count_df = proc.get_all_tweets_types_count(users_ids_df)
     tweets_types_count_df.to_feather('./processed/tweets_types_count')  
 
+def save_tweets_date_count(tweets_date_count_df: pd.DataFrame):
+    tweets_date_count_df.to_feather('./processed/tweets_date_count')  
+
 def load_all_tweets_types_count() -> pd.DataFrame:
     '''
     Load feather format file and return DataFrame object containing count of all tweets types. 
@@ -82,3 +85,11 @@ def load_users_data() -> pd.DataFrame:
 
     return users_df
 
+def load_by_one_all_individual():
+    users_ids_df = proc.get_users_ids()
+    users_following_ids_df = users_ids_df[users_ids_df['type'] == 'A']
+    tweets_df_list = []
+
+    for index, row in users_following_ids_df.iterrows():
+        id = row['id']
+        yield pd.read_feather(f'./data/tweets/{id}')
