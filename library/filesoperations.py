@@ -42,6 +42,11 @@ def save_all_tweets_types_count():
 def save_tweets_date_count(tweets_date_count_df: pd.DataFrame):
     tweets_date_count_df.to_feather('./processed/tweets_date_count')  
 
+def load_tweets_date_count():
+    tweets_date_count_df = pd.read_feather('./processed/tweets_date_count')  
+
+    return tweets_date_count_df
+
 def load_all_tweets_types_count() -> pd.DataFrame:
     '''
     Load feather format file and return DataFrame object containing count of all tweets types. 
