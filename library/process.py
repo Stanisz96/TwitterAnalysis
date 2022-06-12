@@ -1,5 +1,8 @@
+from typing import Generator
 import pandas as pd
 import pathlib as pl
+
+from traitlets import Instance
 import library.const as const
 import os
 import numpy as np
@@ -56,7 +59,18 @@ def get_individual_tweets_date(tweets_individual: pd.DataFrame, round_hours: str
     return tweets_date
 
 
-def count_tweets_date(tweets_df_gen, round_hours: str) -> pd.DataFrame:
+def get_individual_tweets_text_len(tweets_individual: pd.DataFrame) -> pd.DataFrame:
+    '''
+    Get individual tweets text in DataFrame object.
+    Where individual refers to data for one following user and 
+    all data of users that this user is following.
+    '''
+
+    tweets_text_len = tweets_individual['text'].str.len()
+
+    return tweets_text_len   
+
+def count_tweets_date(tweets_df_gen: Generator[list, None, None], round_hours: str) -> pd.DataFrame:
 
     tweets_date_dict = col.defaultdict(int)
 
@@ -68,9 +82,24 @@ def count_tweets_date(tweets_df_gen, round_hours: str) -> pd.DataFrame:
 
     sorted_tweets_date_dict = col.OrderedDict(sorted(tweets_date_dict.items()))
     tweets_date_count_df = pd.DataFrame.from_dict(sorted_tweets_date_dict, orient='index')\
-                                 .reset_index()
+                                       .reset_index()
     tweets_date_count_df.columns = ['date','count']
 
     return tweets_date_count_df
 
 
+def count_tweets_text_len(tweets_df_gen: Generator[list, None, None]) -> pd.DataFrame:
+    tweets_text_len_dict = col.defaultdict(int)
+
+    for tweets_df in tweets_df_gen:
+        tweets_text_len = get_individual_tweets_text_len(tweets_df)
+
+        for indx, tweet_text_len in tweets_text_len.items():
+                tweets_text_len_dict[tweet_text_len] += 1        
+
+    sorted_tweets_text_len_dict = col.OrderedDict(sorted(tweets_text_len_dict.items()))
+    tweets_text_len_count_df = pd.DataFrame.from_dict(sorted_tweets_text_len_dict, orient='index')\
+                                           .reset_index()
+    tweets_text_len_count_df.columns = ['text_len','count']
+
+    return tweets_text_len_count_df

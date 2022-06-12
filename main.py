@@ -42,6 +42,11 @@ def main(step_number: int):
         tweets_date_count_df_clean = res.clean_tweets_date_count(tweets_date_count_df)
         draw.tweets_date_count(tweets_date_count_df_clean, 1)
     
+    if step_number == 8:
+        tweets_df_individual = fo.load_tweets_individual(1393855634270007300)
+        tweets_df_individual['text_count'] = tweets_df_individual['text'].str.len()
+        print(tweets_df_individual.iloc[3].text)
+        print(tweets_df_individual.iloc[3].text_count)
 
 if __name__=="__main__":
-    main(7)
+    main(8)
