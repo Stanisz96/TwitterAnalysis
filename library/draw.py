@@ -21,3 +21,9 @@ def tweets_date_count(tweets_date_count_df: pd.DataFrame, nth_date_xtick: int):
     ax.set_xticklabels(ax_xticks.date)   
     plt.show()
     plt.clf()
+
+
+def tweets_text_len_count(tweets_text_len_count_df: pd.DataFrame):
+    ax = tweets_text_len_count_df.plot(x='text_len', y='count')
+    plt.show()
+    plt.clf()

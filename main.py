@@ -43,10 +43,13 @@ def main(step_number: int):
         draw.tweets_date_count(tweets_date_count_df_clean, 1)
     
     if step_number == 8:
-        tweets_df_individual = fo.load_tweets_individual(1393855634270007300)
-        tweets_df_individual['text_count'] = tweets_df_individual['text'].str.len()
-        print(tweets_df_individual.iloc[3].text)
-        print(tweets_df_individual.iloc[3].text_count)
+        tweets_df_gen = fo.load_by_one_all_individual()
+        tweets_text_len_count_df = proc.count_tweets_text_len(tweets_df_gen)
+        fo.save_tweets_text_len_count(tweets_text_len_count_df)
+        draw.tweets_text_len_count(tweets_text_len_count_df)
 
+    if step_number == 9:
+        tweets_text_len_count_df = fo.load_tweets_text_len_count()
+        draw.tweets_text_len_count(tweets_text_len_count_df)
 if __name__=="__main__":
-    main(8)
+    main(9)
