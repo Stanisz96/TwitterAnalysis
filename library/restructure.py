@@ -110,3 +110,11 @@ def get_following_ids_of_an_user(user_following_id: np.uint64) -> list:
     following_ids_of_an_user = list(json_file['Following'])
 
     return following_ids_of_an_user
+
+
+def clean_tweets_date_count(tweets_date_count_df: pd.DataFrame):
+    df = tweets_date_count_df.tail(1000)
+    # df['date'] = pd.to_datetime(df.loc['date']).dt.date
+    df.reset_index(drop=True, inplace=True)
+
+    return df

@@ -51,17 +51,16 @@ def get_individual_tweets_date(tweets_individual: pd.DataFrame, round_hours: str
     all data of users that this user is following.
     '''
 
-    tweets_date = pd.to_datetime(tweets_individual['created_at'])\
-                    .round(round_hours)
+    tweets_date = pd.to_datetime(tweets_individual['created_at']).dt.date
 
     return tweets_date
 
 
-def count_tweets_date(tweets_df_list: list, round_hours: str) -> pd.DataFrame:
+def count_tweets_date(tweets_df_gen, round_hours: str) -> pd.DataFrame:
 
     tweets_date_dict = col.defaultdict(int)
 
-    for tweets_df in tweets_df_list:
+    for tweets_df in tweets_df_gen:
         tweets_date = get_individual_tweets_date(tweets_df, round_hours)
 
         for indx, tweet_date in tweets_date.items():

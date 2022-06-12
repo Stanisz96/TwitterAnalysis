@@ -7,6 +7,9 @@ import sys
 import collections as col
 import matplotlib.pyplot as plt
 import numpy as np
+import library.restructure as res
+
+
 
 def main(step_number: int):
     if step_number == 1:
@@ -30,9 +33,15 @@ def main(step_number: int):
 
     if step_number == 6:
         tweets_df_gen = fo.load_by_one_all_individual()
-        tweets_date_count_df = proc.count_tweets_date(tweets_df_gen, '24H')
+        tweets_date_count_df = proc.count_tweets_date(tweets_df_gen, 'H')
         fo.save_tweets_date_count(tweets_date_count_df)
         draw.tweets_date_count(tweets_date_count_df, 10)
+
+    if step_number == 7:
+        tweets_date_count_df = fo.load_tweets_date_count()
+        tweets_date_count_df_clean = res.clean_tweets_date_count(tweets_date_count_df)
+        draw.tweets_date_count(tweets_date_count_df_clean, 1)
+    
 
 if __name__=="__main__":
     main(7)
