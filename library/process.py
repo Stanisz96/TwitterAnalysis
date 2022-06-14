@@ -65,10 +65,16 @@ def get_individual_tweets_text_len(tweets_individual: pd.DataFrame) -> pd.DataFr
     Where individual refers to data for one following user and 
     all data of users that this user is following.
     '''
+    for index, row in tweets_individual.iterrows():
+        mention_index = row['text'].rfind('@')
+        text = row['text'][mention_index:]
+        text = text[text.find(' ')+1:]
+        if mention_index != -1:
+            tweets_individual.at[index, 'text'] = text 
 
-    tweets_text_len = tweets_individual['text'].str.len()
+    tweets_text_len_df = tweets_individual['text'].str.len()
 
-    return tweets_text_len   
+    return tweets_text_len_df   
 
 def count_tweets_date(tweets_df_gen: Generator[list, None, None], round_hours: str) -> pd.DataFrame:
 
@@ -92,10 +98,11 @@ def count_tweets_text_len(tweets_df_gen: Generator[list, None, None]) -> pd.Data
     tweets_text_len_dict = col.defaultdict(int)
 
     for tweets_df in tweets_df_gen:
-        tweets_text_len = get_individual_tweets_text_len(tweets_df)
+        tweets_text_df = get_individual_tweets_text_len(tweets_df)
 
-        for indx, tweet_text_len in tweets_text_len.items():
+        for indx, tweet_text_len in tweets_text_df.items():
                 tweets_text_len_dict[tweet_text_len] += 1        
+
 
     sorted_tweets_text_len_dict = col.OrderedDict(sorted(tweets_text_len_dict.items()))
     tweets_text_len_count_df = pd.DataFrame.from_dict(sorted_tweets_text_len_dict, orient='index')\

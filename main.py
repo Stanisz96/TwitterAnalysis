@@ -48,8 +48,8 @@ def main(step_number: int):
         fo.save_tweets_text_len_count(tweets_text_len_count_df)
         draw.tweets_text_len_count(tweets_text_len_count_df)
 
-    if step_number == 9:
-        tweets_text_len_count_df = fo.load_tweets_text_len_count()
-        draw.tweets_text_len_count(tweets_text_len_count_df)
+
+
+
 if __name__=="__main__":
-    main(9)
+    main(8)
