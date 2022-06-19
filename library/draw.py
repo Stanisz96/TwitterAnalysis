@@ -27,3 +27,13 @@ def tweets_text_len_count(tweets_text_len_count_df: pd.DataFrame):
     ax = tweets_text_len_count_df.plot(x='text_len', y='count')
     plt.show()
     plt.clf()
+
+
+def tweets_freq(tweets_freq_df: pd.DataFrame, nth_date_xtick: int):
+    ax = tweets_freq_df.plot.bar(x='tweets_per_day', y='users_count')
+    ax_xticks = tweets_freq_df.iloc[::nth_date_xtick, :]
+    ax.tick_params(axis='x', which='both', labelsize=6)
+    ax.set_xticks(ax_xticks.tweets_per_day.index)
+    ax.set_xticklabels(ax_xticks.tweets_per_day)   
+    plt.show()
+    plt.clf()

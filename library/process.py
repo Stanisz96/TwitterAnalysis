@@ -58,6 +58,19 @@ def get_individual_tweets_date(tweets_individual: pd.DataFrame, round_hours: str
 
     return tweets_date
 
+def get_individual_tweets_date_ext(tweets_individual: pd.DataFrame) -> pd.DataFrame:
+    '''
+    Get individual tweets data in DataFrame object.
+    Where individual refers to data for one following user and 
+    all data of users that this user is following.
+    '''
+
+    tweets_df_temp = [tweets_individual['created_at'],tweets_individual['author_id']]
+    headers = ['created_at', 'author_id']
+    tweets_df = pd.concat(tweets_df_temp, axis=1, keys=headers)
+    tweets_df['created_at'] = pd.to_datetime(tweets_df['created_at']).dt.date
+
+    return tweets_df
 
 def get_individual_tweets_text_len(tweets_individual: pd.DataFrame) -> pd.DataFrame:
     '''
@@ -81,7 +94,7 @@ def count_tweets_date(tweets_df_gen: Generator[list, None, None], round_hours: s
     tweets_date_dict = col.defaultdict(int)
 
     for tweets_df in tweets_df_gen:
-        tweets_date = get_individual_tweets_date(tweets_df, round_hours)
+        tweets_date = get_individual_tweets_date(tweets_df)
 
         for indx, tweet_date in tweets_date.items():
                 tweets_date_dict[tweet_date] += 1
@@ -110,3 +123,46 @@ def count_tweets_text_len(tweets_df_gen: Generator[list, None, None]) -> pd.Data
     tweets_text_len_count_df.columns = ['text_len','count']
 
     return tweets_text_len_count_df
+
+
+
+def count_users_tweets_per_day(tweets_df_gen: Generator[list, None, None]) -> pd.DataFrame:
+    '''
+    Count user tweets frequency. How often per day users tweets, retweet, reply or quote.
+    '''
+
+    users_ids_dict = {}
+    tweets_freq_dict = col.defaultdict(int)
+    tweets_date_dict = col.defaultdict(int)
+    prev_id = 0
+
+    for tweets_df in tweets_df_gen:
+        tweets_date_df = get_individual_tweets_date_ext(tweets_df)
+        tweets_date_dict = col.defaultdict(int)
+
+        for index, row in tweets_date_df.iterrows():
+            if (prev_id != row['author_id'] and prev_id != 0):
+                if prev_id not in users_ids_dict:
+                    users_ids_dict[prev_id] = 1
+                    mean_freq = sum(tweets_date_dict.values()) / len(tweets_date_dict)
+                    tweets_freq_dict[int(mean_freq)] += 1
+                
+                tweets_date_dict = col.defaultdict(int)
+            
+            tweets_date_dict[row['created_at']] += 1
+            prev_id = row['author_id']
+
+        if prev_id not in users_ids_dict:
+            users_ids_dict[prev_id] = 1
+            mean_freq = sum(tweets_date_dict.values()) / len(tweets_date_dict)
+            tweets_freq_dict[int(mean_freq)] += 1
+
+        
+    print(len(users_ids_dict))
+    sorted_tweets_freq_dict = col.OrderedDict(sorted(tweets_freq_dict.items()))
+    tweets_freq_df = pd.DataFrame.from_dict(sorted_tweets_freq_dict, orient='index')\
+                                       .reset_index()
+    tweets_freq_df.columns = ['tweets_per_day','users_count']
+
+    return tweets_freq_df
+

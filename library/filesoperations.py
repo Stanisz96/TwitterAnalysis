@@ -45,6 +45,14 @@ def save_tweets_date_count(tweets_date_count_df: pd.DataFrame):
 def save_tweets_text_len_count(tweets_text_len_count_df: pd.DataFrame):
     tweets_text_len_count_df.to_feather('./processed/tweets_text_len_count')  
 
+def save_tweets_freq(tweets_freq_df: pd.DataFrame):
+    tweets_freq_df.to_feather('./processed/tweets_freq')  
+
+def load_tweets_freq() -> pd.DataFrame:
+    tweets_freq_df = pd.read_feather('./processed/tweets_freq')  
+
+    return tweets_freq_df   
+
 def load_tweets_date_count() -> pd.DataFrame:
     tweets_date_count_df = pd.read_feather('./processed/tweets_date_count')  
 

@@ -48,8 +48,22 @@ def main(step_number: int):
         fo.save_tweets_text_len_count(tweets_text_len_count_df)
         draw.tweets_text_len_count(tweets_text_len_count_df)
 
+    if step_number == 9:
+        # tweet_individual = fo.load_tweets_individual(22594291)
+        # tweet_text = tweet_individual.loc[tweet_individual['id'] == 1480555038330265600].text.values[0]
+        # tweet_text = tweet_text[31:]
+        # print(bytes(tweet_text,'utf-8').decode('utf-32'))
+        tweets_text_len_count_df = fo.load_tweets_text_len_count()
+        draw.tweets_text_len_count(tweets_text_len_count_df)
 
+    if step_number == 10:
+        tweets_df_gen = fo.load_by_one_all_individual()
+        users_tweets_per_day = proc.count_users_tweets_per_day(tweets_df_gen)
+        fo.save_tweets_freq(users_tweets_per_day)
 
+    if step_number == 11:
+        tweets_freq_df = fo.load_tweets_freq()
+        draw.tweets_freq(tweets_freq_df, 1)
 
 if __name__=="__main__":
-    main(8)
+    main(11)
