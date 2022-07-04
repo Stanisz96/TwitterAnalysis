@@ -166,3 +166,8 @@ def count_users_tweets_per_day(tweets_df_gen: Generator[list, None, None]) -> pd
 
     return tweets_freq_df
 
+# def count_user_retweet_response_prob(follower_users_meta_df: pd.DataFrame,
+#                                      individual_tweets_gen:  Generator[list, None, None]) -> pd.DataFrame:
+
+#     for individual_tweets_df in individual_tweets_gen:
+        

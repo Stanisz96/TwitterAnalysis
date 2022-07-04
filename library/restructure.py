@@ -49,7 +49,9 @@ def gen_tweets_array(user_following_id: np.uint64):
                            json_temp['Public_metrics']['Retweet_count'],
                            json_temp['Public_metrics']['Reply_count'],
                            json_temp['Public_metrics']['Like_count'],
-                           json_temp['Public_metrics']['Quote_count']]
+                           json_temp['Public_metrics']['Quote_count'],
+                           json_temp['DownloadedDateTime'],
+                           json_temp['Conversation_id']]
 
 def get_users_dataframe() -> pd.DataFrame:
     '''
