@@ -52,6 +52,7 @@ coverage.xml
 .pytest_cache/
 data/
 processed/
+dataV2/
 
 # Translations
 *.mo
