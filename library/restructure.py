@@ -1,6 +1,6 @@
 import pandas as pd
 import pathlib as pl
-import library.const as const
+import library.const as con
 import os
 import json
 import numpy as np
@@ -16,8 +16,8 @@ def gen_tweets_dataframes(users_following_ids_df: pd.DataFrame):
     
     for index, row in users_following_ids_df.iterrows(): 
         yield pd.DataFrame(list(gen_tweets_array(row['id'])),
-                           columns=const.TWEET_COLUMN_NAMES)\
-                                .astype(const.TWEET_TYPES_LIST)\
+                           columns=con.TWEET_COLUMN_NAMES)\
+                                .astype(con.TWEET_TYPES_LIST)\
                                 .reset_index()
 
 
@@ -31,9 +31,9 @@ def gen_tweets_array(user_following_id: np.uint64):
     users_ids_array = get_all_ids_for_individual(user_following_id)
 
     for users_following_id in users_ids_array:
-        tweets_path = pl.Path(const.USERS_PATH,str(users_following_id),"tweets")
+        tweets_path = pl.Path(con.USERS_PATH,str(users_following_id),"tweets")
 
-        for idx, tweet_type in enumerate(const.TWEET_TYPE_NAMES):
+        for idx, tweet_type in enumerate(con.TWEET_TYPE_NAMES):
             tweets_type_path = pl.Path(tweets_path,tweet_type)
 
             for json_file in os.listdir(tweets_type_path): 
@@ -59,8 +59,8 @@ def get_users_dataframe() -> pd.DataFrame:
     '''
     
     users_dataframe = pd.DataFrame(list(gen_users_data_array(proc.get_users_ids())),
-                           columns=const.USER_COLUMN_NAMES)\
-                                .astype(const.USER_TYPES_LIST)\
+                           columns=con.USER_COLUMN_NAMES)\
+                                .astype(con.USER_TYPES_LIST)\
                                 .reset_index()
 
     return users_dataframe
@@ -71,7 +71,7 @@ def gen_users_data_array(users_ids_df: pd.DataFrame):
     '''
 
     for index, row in users_ids_df.iterrows():
-        json_path = pl.Path(const.USERS_PATH,row['id'],"userData.json")
+        json_path = pl.Path(con.USERS_PATH,row['id'],"userData.json")
         json_temp = json.load(open(json_path, encoding="utf-8"))
         if row['type'] == 'A':
             json_temp = json_temp['data']
@@ -107,7 +107,7 @@ def get_following_ids_of_an_user(user_following_id: np.uint64) -> list:
     Get all ids of users that are followed by user given in fun parm.
     '''
 
-    json_path = os.path.join(const.USERS_PATH, user_following_id, "metaData.json")
+    json_path = os.path.join(con.USERS_PATH, user_following_id, "metaData.json")
     json_file = json.load(open(json_path, encoding="utf8"))
     following_ids_of_an_user = list(json_file['Following'])
 

@@ -2,7 +2,7 @@ import pandas as pd
 import library.process as proc 
 import library.restructure as res
 import numpy as np
-import const
+import library.const as con
 
 def save_all_tweets_individuals():
     '''
@@ -17,7 +17,7 @@ def save_all_tweets_individuals():
 
     for tweets_df in res.gen_tweets_dataframes(users_following_ids_df):
         id = tweets_df.iloc[0]['author_id']
-        tweets_df.to_feather(f'{const.DATA_PATH}/tweets/{id}')
+        tweets_df.to_feather(f'{con.DATA_PATH}/tweets/{id}')
 
 
 def save_users_data():
@@ -27,7 +27,7 @@ def save_users_data():
     '''
 
     users_data_df = res.get_users_dataframe()
-    users_data_df.to_feather(f'{const.DATA_PATH}/users')
+    users_data_df.to_feather(f'{con.DATA_PATH}/users')
 
 def save_all_tweets_types_count():
     '''
@@ -37,29 +37,29 @@ def save_all_tweets_types_count():
 
     users_ids_df = proc.get_users_ids()
     tweets_types_count_df = proc.get_all_tweets_types_count(users_ids_df)
-    tweets_types_count_df.to_feather(f'{const.PROC_PATH}/tweets_types_count')  
+    tweets_types_count_df.to_feather(f'{con.PROC_PATH}/tweets_types_count')  
 
 def save_tweets_date_count(tweets_date_count_df: pd.DataFrame):
-    tweets_date_count_df.to_feather(f'{const.PROC_PATH}/tweets_date_count')  
+    tweets_date_count_df.to_feather(f'{con.PROC_PATH}/tweets_date_count')  
 
 def save_tweets_text_len_count(tweets_text_len_count_df: pd.DataFrame):
-    tweets_text_len_count_df.to_feather(f'{const.PROC_PATH}/tweets_text_len_count')  
+    tweets_text_len_count_df.to_feather(f'{con.PROC_PATH}/tweets_text_len_count')  
 
 def save_tweets_freq(tweets_freq_df: pd.DataFrame):
-    tweets_freq_df.to_feather(f'{const.PROC_PATH}/tweets_freq')  
+    tweets_freq_df.to_feather(f'{con.PROC_PATH}/tweets_freq')  
 
 def load_tweets_freq() -> pd.DataFrame:
-    tweets_freq_df = pd.read_feather(f'{const.PROC_PATH}/tweets_freq')  
+    tweets_freq_df = pd.read_feather(f'{con.PROC_PATH}/tweets_freq')  
 
     return tweets_freq_df   
 
 def load_tweets_date_count() -> pd.DataFrame:
-    tweets_date_count_df = pd.read_feather(f'{const.PROC_PATH}/tweets_date_count')  
+    tweets_date_count_df = pd.read_feather(f'{con.PROC_PATH}/tweets_date_count')  
 
     return tweets_date_count_df
 
 def load_tweets_text_len_count() -> pd.DataFrame:
-    tweets_date_text_len_df = pd.read_feather(f'{const.PROC_PATH}/tweets_text_len_count')  
+    tweets_date_text_len_df = pd.read_feather(f'{con.PROC_PATH}/tweets_text_len_count')  
 
     return tweets_date_text_len_df
 
@@ -68,7 +68,7 @@ def load_all_tweets_types_count() -> pd.DataFrame:
     Load feather format file and return DataFrame object containing count of all tweets types. 
     '''
 
-    tweets_types_count_df = pd.read_feather(f'{const.PROC_PATH}/tweets_types_count')
+    tweets_types_count_df = pd.read_feather(f'{con.PROC_PATH}/tweets_types_count')
 
     return tweets_types_count_df
    
@@ -80,7 +80,7 @@ def load_tweets_individual(user_id: np.uint64) -> pd.DataFrame:
     all data of users that this user is following.
     '''
 
-    tweets_df = pd.read_feather(f'{const.DATA_PATH}/tweets/{user_id}')
+    tweets_df = pd.read_feather(f'{con.DATA_PATH}/tweets/{user_id}')
 
     return tweets_df
 
@@ -93,7 +93,7 @@ def load_all_tweets_individual() -> list:
 
     for index, row in users_following_ids_df.iterrows():
         id = row['id']
-        tweets_df_list.append(pd.read_feather(f'{const.DATA_PATH}/tweets/{id}'))
+        tweets_df_list.append(pd.read_feather(f'{con.DATA_PATH}/tweets/{id}'))
     
     return tweets_df_list
 
@@ -102,7 +102,7 @@ def load_users_data() -> pd.DataFrame:
     Load feather format file and return DataFrame object containing users data.
     '''
 
-    users_df = pd.read_feather(f'{const.DATA_PATH}/users')
+    users_df = pd.read_feather(f'{con.DATA_PATH}/users')
 
     return users_df
 
@@ -113,4 +113,4 @@ def load_by_one_all_individual():
 
     for index, row in users_following_ids_df.iterrows():
         id = row['id']
-        yield pd.read_feather(f'{const.DATA_PATH}/tweets/{id}')
+        yield pd.read_feather(f'{con.DATA_PATH}/tweets/{id}')

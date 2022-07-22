@@ -66,4 +66,4 @@ def main(step_number: int):
         draw.tweets_freq(tweets_freq_df, 1)
 
 if __name__=="__main__":
-    main(11)
+    main(1)
