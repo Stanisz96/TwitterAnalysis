@@ -53,6 +53,7 @@ coverage.xml
 data/
 processed/
 dataV2/
+processedV2/
 
 # Translations
 *.mo
