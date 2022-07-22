@@ -2,6 +2,9 @@ import pathlib as pl
 import numpy as np
 
 MAIN_PATH = pl.Path('C:/Magisterka/dataV2')
+DATA_PATH = pl.Path('./dataV2')
+PROC_PATH = pl.Path('./processedV2')
+IMAGES_PATH = pl.Path('./imagesV2')
 USERS_PATH = pl.Path(MAIN_PATH,"users")
 TWEET_TYPE_NAMES = ["quoted","replied_to","retweeted","tweeted"]
 TWEET_COLUMN_NAMES = ['author_id','id','text','created_at','lang','source','type','ref_id',

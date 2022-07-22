@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 import pandas as pd
-
+import const
 
 def tweets_types_count(tweet_types_count: pd.DataFrame):
 
@@ -9,7 +9,7 @@ def tweets_types_count(tweet_types_count: pd.DataFrame):
     data = tweet_types_count.values
     ax.bar(names_of_x_axis.values, data[0])
 
-    plt.savefig('./images/tweets_types_count.png')    
+    plt.savefig(f'{const.IMAGES_PATH}/tweets_types_count.png')    
     plt.clf()
 
 def tweets_date_count(tweets_date_count_df: pd.DataFrame, nth_date_xtick: int):
