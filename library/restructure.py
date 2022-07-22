@@ -80,14 +80,16 @@ def gen_users_data_array(users_ids_df: pd.DataFrame):
                 json_temp['created_at'], json_temp['description'],
                 json_temp['public_metrics']['followers_count'],
                 json_temp['public_metrics']['tweet_count'],
-                json_temp['verified'],json_temp['protected']]
+                json_temp['verified'],json_temp['protected'],
+                json_temp['DownloadedDateTime'],json_temp['conversation_id']]
         
         if row['type'] == 'B':
             yield [row['type'], json_temp['Id'], json_temp['Name'], json_temp['Username'],
                 json_temp['Created_at'], json_temp['Description'],
                 json_temp['Public_metrics']['Followers_count'],
                 json_temp['Public_metrics']['Tweet_count'],
-                json_temp['Verified'],json_temp['Protected']]
+                json_temp['Verified'],json_temp['Protected'],
+                json_temp['DownloadedDateTime'],json_temp['Conversation_Id']]
 
 
 def get_all_ids_for_individual(user_following_id: np.uint64) -> list:
